@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
+import { WeatherService } from './weather.service';
 
 @Component({
   selector: 'my-app',
@@ -10,13 +11,8 @@ import { Observable } from 'rxjs';
 export class AppComponent {
   name = 'Angular';
   zipcodesArray = [];
-  apiKey = '5a4b2d457ecbef9eb2a71e480b947604';
 
-  private url =
-    'https://api.openweathermap.org/data/2.5/weather?zip=10001&units=imperial&APPID=' +
-    this.apiKey;
-
-  constructor(private http: HttpClient) {}
+  constructor(private weatherService: WeatherService) {}
 
   storeZipCode(zipcode) {
     console.log(zipcode);
@@ -26,13 +22,8 @@ export class AppComponent {
     const getZipCodesStored = localStorage.getItem('zipCodesEntered');
     console.log('getZipCodesStored', getZipCodesStored);
 
-    this.getForecast().subscribe((data) => {
+    this.weatherService.getForecast(zipcode).subscribe((data) => {
       console.log(data);
     });
-  }
-
-  // TODO: Change this to a service
-  getForecast(): Observable<any> {
-    return this.http.get<any>(this.url);
   }
 }
