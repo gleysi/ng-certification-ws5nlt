@@ -15,8 +15,22 @@ export class WeatherService {
   ) {
   }
 
+  // Observable
   getForecast(zipCode: string): Observable<any> {
     return this.http.get<any>('https://api.openweathermap.org/data/2.5/weather?zip=' + zipCode + '&units=imperial&APPID=' +
     this.apiKey);
+  }
+
+  // Promise
+  async getWeather(zipCode: string): Promise<any> {
+    try {
+      const response = await this.http.get('https://api.openweathermap.org/data/2.5/weather?zip=' + zipCode + '&units=imperial&APPID=' +
+      this.apiKey, {});
+  
+      return Promise.resolve(response);
+    } catch(error) {
+      console.log(error);
+    }
+    
   }
 }
