@@ -7,17 +7,10 @@ import { WeatherService } from './../weather.service';
   styleUrls: ['./landing-page.component.scss'],
 })
 export class LandingPageComponent {
-  name = 'Angular';
-  zipcodesArray = [];
-  weatherDisplay;
-  weatherDisplayArray: any;
   storedZipcodeEntered;
-  imagePath = 'https://www.angulartraining.com/images/weather/';
 
-  constructor(private weatherService: WeatherService) {}
-
-  storeZipCode(zipcode: string): void {
-    this.getWeatherLocation(zipcode);
+  constructor(private weatherService: WeatherService) {
+    this.getItems();
   }
 
   async getWeatherLocation(zipcode: string): Promise<any> {
@@ -25,22 +18,27 @@ export class LandingPageComponent {
       data.zipcode = zipcode;
       const image =
         data.weather[0].main === 'Clear' ? 'clouds' : data.weather[0].main;
-      data.imageUrl = this.imagePath + image.toLowerCase() + '.png';
+      data.imageUrl =
+        'https://www.angulartraining.com/images/weather/' +
+        image.toLowerCase() +
+        '.png';
       data.link = '/forecast/' + data.zipcode;
-      this.weatherDisplay = data;
-      this.storageItems(this.weatherDisplay);
+      this.addItem(data);
     });
   }
 
-  storageItems(weatherEntered: object): void {
-    this.zipcodesArray.push(weatherEntered);
-
-    localStorage.setItem('zipCodesEntered', JSON.stringify(this.zipcodesArray));
-
+  getItems(): void {
     this.storedZipcodeEntered = JSON.parse(
       localStorage.getItem('zipCodesEntered')
     );
-    console.log('this.storedZipcodeEntered', this.storedZipcodeEntered);
+  }
+
+  addItem(weatherEntered: object): void {
+    this.storedZipcodeEntered.push(weatherEntered);
+    localStorage.setItem(
+      'zipCodesEntered',
+      JSON.stringify(this.storedZipcodeEntered)
+    );
   }
 
   removeItem(item: string): void {
