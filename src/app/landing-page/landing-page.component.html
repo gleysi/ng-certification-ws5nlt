@@ -1,0 +1,44 @@
+<div class="container-fluid">
+  <div class="well">
+    <h2>Enter a zipcode:</h2>
+    <input
+      class="form-control"
+      placeholder="Zipcode"
+      type="text"
+      id="addLocation"
+      #zipcode
+    />
+    <br />
+    <button
+      class="btn btn-primary"
+      id="addLocationBtn"
+      (click)="storeZipCode(zipcode.value)"
+    >
+      Add location
+    </button>
+  </div>
+  <div *ngFor="let weather of storedZipcodeEntered">
+    <div class="well flex">
+      <div>
+        <h3>{{ weather?.name }} ({{ weather?.zipcode }})</h3>
+        <h4>Current conditions: {{ weather?.weather[0].main }}</h4>
+        <h4>Temperatures today:</h4>
+        <p>
+          Current {{ weather?.main?.temp }} - Max
+          {{ weather?.main?.temp_max }} - Min
+          {{ weather?.main?.temp_min }}
+        </p>
+        <p>
+          <a [routerLink]="weather?.link"
+            >Show 5-day forecast for Rancho Cordova</a
+          >
+        </p>
+      </div>
+      <div>
+        <span class="close" (click)="removeItem(weather)">×</span>
+        <img [src]="weather?.imageUrl" />
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
