@@ -25,8 +25,9 @@ export class AppComponent {
   async getWeatherLocation(zipcode: string): Promise<any> {
     this.weatherService.getForecast(zipcode).subscribe((data) => {
       data.zipcode = zipcode;
-      data.imageUrl =
-        this.imagePath + data.weather[0].main.toLowerCase() + '.png';
+      const image =
+        data.weather[0].main === 'Clear' ? 'clouds' : data.weather[0].main;
+      data.imageUrl = this.imagePath + image.toLowerCase() + '.png';
       this.weatherDisplay = data;
       this.storageItems(this.weatherDisplay);
     });
@@ -41,5 +42,16 @@ export class AppComponent {
       localStorage.getItem('zipCodesEntered')
     );
     console.log('this.storedZipcodeEntered', this.storedZipcodeEntered);
+  }
+
+  removeItem(item: string): void {
+    const removeItem = this.storedZipcodeEntered.indexOf(item);
+    this.storedZipcodeEntered = this.storedZipcodeEntered.filter(
+      (item, key) => key !== removeItem
+    );
+    localStorage.setItem(
+      'zipCodesEntered',
+      JSON.stringify(this.storedZipcodeEntered)
+    );
   }
 }
