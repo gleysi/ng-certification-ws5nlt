@@ -10,9 +10,13 @@ export class WeatherService {
 
   constructor(private http: HttpClient) {}
 
-  getNextDays(city: string): Observable<any> {
+  getNextDays(zipCode: string): Observable<any> {
     return this.http.get<any>(
-      this.url + 'forecast/daily?q=' + city + '&APPID=' + this.apiKey
+      this.url +
+        'forecast/daily?zip=' +
+        zipCode +
+        '&cnt=5&units=imperial&APPID=' +
+        this.apiKey
     );
   }
 

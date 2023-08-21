@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { WeatherService } from './../weather.service';
 
 @Component({
@@ -6,25 +7,34 @@ import { WeatherService } from './../weather.service';
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.scss'],
 })
-export class LandingPageComponent {
+export class LandingPageComponent implements OnInit, OnDestroy {
   storedZipcodeEntered;
+  private subscription: Subscription;
 
-  constructor(private weatherService: WeatherService) {
+  constructor(private weatherService: WeatherService) {}
+
+  ngOnInit() {
     this.getItems();
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   async getWeatherLocation(zipcode: string): Promise<any> {
-    this.weatherService.getForecast(zipcode).subscribe((data) => {
-      data.zipcode = zipcode;
-      const image =
-        data.weather[0].main === 'Clear' ? 'clouds' : data.weather[0].main;
-      data.imageUrl =
-        'https://www.angulartraining.com/images/weather/' +
-        image.toLowerCase() +
-        '.png';
-      data.link = '/forecast/' + data.zipcode;
-      this.addItem(data);
-    });
+    this.subscription = this.weatherService
+      .getForecast(zipcode)
+      .subscribe((data) => {
+        data.zipcode = zipcode;
+        const image =
+          data.weather[0].main === 'Clear' ? 'clouds' : data.weather[0].main;
+        data.imageUrl =
+          'https://www.angulartraining.com/images/weather/' +
+          image.toLowerCase() +
+          '.png';
+        data.link = '/forecast/' + data.zipcode;
+        this.addItem(data);
+      });
   }
 
   getItems(): void {
