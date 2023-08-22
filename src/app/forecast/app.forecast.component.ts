@@ -11,6 +11,7 @@ import { WeatherService } from '../weather.service';
 export class ForecastComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private weatherServiceSubscription: Subscription;
+  forecast: any;
 
   constructor(
     private weatherService: WeatherService,
@@ -24,6 +25,8 @@ export class ForecastComponent implements OnInit, OnDestroy {
         this.weatherServiceSubscription = this.weatherService
           .getNextDays(params['id'])
           .subscribe((res) => {
+            this.forecast = res;
+
             console.log(res);
           });
       }
