@@ -20,14 +20,11 @@ export class ForecastComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe((params) => {
-      console.log(params);
       if (params && params['id']) {
         this.weatherServiceSubscription = this.weatherService
           .getNextDays(params['id'])
           .subscribe((res) => {
             this.forecast = res;
-
-            console.log(res);
           });
       }
     });
