@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { WeatherResponse } from '../models/location-response.model';
 import { WeatherService } from './../weather.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { WeatherService } from './../weather.service';
   styleUrls: ['./landing-page.component.scss'],
 })
 export class LandingPageComponent implements OnInit, OnDestroy {
-  storedZipcodeEntered;
+  storedZipcodeEntered: WeatherResponse[];
   private subscription: Subscription;
 
   constructor(private weatherService: WeatherService) {}
@@ -45,7 +46,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  addItem(weatherEntered: object): void {
+  addItem(weatherEntered: WeatherResponse): void {
     this.storedZipcodeEntered.push(weatherEntered);
     localStorage.setItem(
       'zipCodesEntered',
@@ -53,7 +54,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  removeItem(item: string): void {
+  removeItem(item: WeatherResponse): void {
     const removeItem = this.storedZipcodeEntered.indexOf(item);
     this.storedZipcodeEntered = this.storedZipcodeEntered.filter(
       (item, key) => key !== removeItem

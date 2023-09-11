@@ -14,7 +14,7 @@ export class WeatherService {
     this.apiKey = '5a4b2d457ecbef9eb2a71e480b947604';
   }
 
-  getNextDays(zipCode: string): Observable<ForecastResponse> {
+  getNextDays(zipCode: number): Observable<ForecastResponse> {
     const params = {
       zip: `${zipCode}`,
       cnt: '5',
