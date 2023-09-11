@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ForecastResponse } from '../models/forecast-response.model';
 import { WeatherService } from '../weather.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { WeatherService } from '../weather.service';
 export class ForecastComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private weatherServiceSubscription: Subscription;
-  forecast: any;
+  forecast: ForecastResponse;
 
   constructor(
     private weatherService: WeatherService,

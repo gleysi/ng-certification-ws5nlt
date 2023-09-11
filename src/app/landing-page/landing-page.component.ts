@@ -23,7 +23,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  async getWeatherLocation(zipcode: string): Promise<any> {
+  async getWeatherLocation(zipcode: number): Promise<any> {
     this.subscription = this.weatherService
       .getForecast(zipcode)
       .subscribe((data) => {
